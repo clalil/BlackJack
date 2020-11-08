@@ -8,8 +8,20 @@
 
 #include <iostream>
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    return 0;
+int main() {
+    bool gameover = false;
+    int input = 0;
+    
+    while(gameover != true) {
+        std::cout << "Enter 1 or 2" << "\n";
+        std::cin >> input;
+        
+        if(input == 1) {
+            std::cout << "Continue";
+        } else if (input == 2) {
+            gameover = true;
+            std::cout << "Game Over" << "\n";
+        }
+    }
+    //return width*depth*height;
 }
