@@ -5,48 +5,40 @@
 //  Created by Clarissa Liljander on 2020-11-07.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
-#include <cstdlib>       // srand, rand
-#include <ctime>         // time
+#include <random>
 #include <vector>        //vector
 #include <iostream>
 using namespace std;
 
+// Set up our random device and number generator as globals
+std::random_device randomDevice;
+std::mt19937 randomGenerator = std::mt19937(randomDevice());
+
 void greeting() {
-    std::cout <<
-    "Welcome to Dicejack! Please take a seat at the table. " <<
-    "You start with 100 credits. You win the game if you get to 300 credits." << "\n";
+    cout << "Welcome to Dicejack! The rules are simple:" << "\n";
+    cout << "You start with 100 credits. You win the game if you get to 300 credits." << "\n";
 }
 
 void current_credits(int credits) {
-   cout <<
-    "You have " << credits << " credits." << "\n"
-    << "What would you like to do next?" << "\n"
-    << "[1] Play a round." << "\n"
-    << "[2] Leave the table." << "\n";
+    cout << "You have " << credits << " credits." << "\n";
+    cout << "What would you like to do next?" << "\n";
+    cout << "[1] Play a round." << "\n";
+    cout << "[2] Leave the table." << "\n";
 }
 
-void roll_dice(int& total) {
-    vector<int> dices = {};
-    srand(time(NULL));
-
-    for(int i = 0; i < 2; ++i) {
-        int diceRoll = 1 + (rand() % 6);
-        dices.push_back(diceRoll);
-        total += diceRoll;
-    }
-    
-    cout <<
-    "I have rolled 2 six-sided dice and they came up "
-    << dices[0] << " and " << dices[1] << "."
-    << "Your total is currently " << total << ". You will go bust if you score over 21." << "\n";
+// Create a random integer function that uses the global random generator
+int randomInteger(int min, int max) {
+    std::uniform_int_distribution<int> diceRoller(min, max);
+    return diceRoller(randomGenerator);
 }
 
 int main() {
     bool gameover = false;
-    int input = 0;
     int credits = 100;
+    int input = 0;
     int bet = 0;
     int total = 0;
+    vector<int> dice_rolled = {};
     
     greeting();
     
@@ -64,7 +56,14 @@ int main() {
                 cout << "Your bet is too high. Bet again." << "\n";
                 cin >> bet;
             } else {
-                roll_dice();
+                for(int i = 0; i < 2; ++i) {
+                    total += randomInteger(1, 6);
+                    dice_rolled.push_back(total);
+                }
+                
+                cout << "I have rolled 2 six-sided dice and they came up as: " << "\n";
+                cout << dice_rolled[0] << " and " << dice_rolled[1] << "." << "\n";
+                cout << "Your total is currently " << total << ". You will go bust if you score over 21." << "\n";
             }
 
         } else if (input == 2) {
