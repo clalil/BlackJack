@@ -20,10 +20,16 @@ void greeting() {
 }
 
 void current_credits(int credits) {
-    cout << "You have " << credits << " credits." << "\n";
+    cout << "You currently have " << credits << " credits." << "\n";
     cout << "What would you like to do next?" << "\n";
     cout << "[1] Play a round." << "\n";
     cout << "[2] Leave the table." << "\n";
+}
+
+void current_total(vector<int> dice_rolled, int total) {
+    cout << "I have rolled 2 six-sided dice and they came up as: " << "\n";
+    cout << dice_rolled[0] << " and " << dice_rolled[1] << "." << "\n";
+    cout << "Your total is currently " << total << ". You will go bust if you score over 21." << "\n";
 }
 
 // Create a random integer function that uses the global random generator
@@ -33,12 +39,12 @@ int randomInteger(int min, int max) {
 }
 
 int main() {
+    vector<int> dice_rolled = {};
     bool gameover = false;
     int credits = 100;
     int input = 0;
     int bet = 0;
     int total = 0;
-    vector<int> dice_rolled = {};
     
     greeting();
     
@@ -61,9 +67,11 @@ int main() {
                     dice_rolled.push_back(total);
                 }
                 
-                cout << "I have rolled 2 six-sided dice and they came up as: " << "\n";
-                cout << dice_rolled[0] << " and " << dice_rolled[1] << "." << "\n";
-                cout << "Your total is currently " << total << ". You will go bust if you score over 21." << "\n";
+                current_total(dice_rolled, total);
+                
+                cout << "What would you like to do next?" << "\n";
+                cout << "[1] Stick" << "\n";
+                cout << "[2] Roll again" << "\n";
             }
 
         } else if (input == 2) {
