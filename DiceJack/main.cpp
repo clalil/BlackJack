@@ -45,6 +45,13 @@ int random_dice(void) {
     return dice_roller(random_generator);
 }
 
+void dice_roll(vector<int> dices) {
+    cout << dices.at(0) << endl;
+    cout << dices.at(1) << endl;
+    cout << dices.at(2) << endl;
+    cout << dices.at(3) << endl;
+}
+
 void who_won(int player_total, int bet) {
     vector<int> dices = {};
     int comp_total = 0;
@@ -56,20 +63,14 @@ void who_won(int player_total, int bet) {
     
     if (comp_total > 21) {
         cout << "Computer rolled:" << "\n";
-        cout << dices.at(0) << endl;
-        cout << dices.at(1) << endl;
-        cout << dices.at(2) << endl;
-        cout << dices.at(3) << endl;
+        dice_roll(dices);
         cout << "You won!" << "\n";
         
         credits += bet;
         return;
     } else if (comp_total > player_total) {
         cout << "Computer rolled:" << "\n";
-        cout << dices.at(0) << endl;
-        cout << dices.at(1) << endl;
-        cout << dices.at(2) << endl;
-        cout << dices.at(3) << endl;
+        dice_roll(dices);
         cout << "Computer's total of " << comp_total << " is more than your total." << "\n";
         cout << "You lost!" << "\n";
         
