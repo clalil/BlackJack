@@ -13,6 +13,8 @@ using namespace std;
 
 int credits = 100;
 int user_input = 0;
+int bet = 0;
+int player_total = 0;
 
 void greeting() {
     cout << "Welcome to Dicejack! The rules are simple:" << "\n";
@@ -43,7 +45,7 @@ int random_dice(void) {
     return dice_roller(random_generator);
 }
 
-void who_won(int player_total, int& bet) {
+void who_won(int player_total, int bet) {
     vector<int> dices = {};
     int comp_total = 0;
 
@@ -79,8 +81,6 @@ void who_won(int player_total, int& bet) {
 }
 
 void play_round() {
-    int bet = 0;
-    int player_total = 0;
     bool playing = true;
     vector<int> dices = {};
     
@@ -108,13 +108,10 @@ void play_round() {
 
         dices.clear();
         if (user_input == 1) {
-            play_round();
-        } else if (user_input == 2) {
-            break;
+            who_won(player_total, bet);
+            return;
         }
     }
-    
-    who_won(player_total, bet);
 }
 
 int main() {
