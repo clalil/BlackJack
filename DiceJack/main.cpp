@@ -121,7 +121,7 @@ int main() {
     
     greeting();
     
-    while(gameover != true && credits > 0) {
+    while((gameover != true && credits >= 0) || (gameover != true && credits <= 300)) {
         current_credits(credits);
         cin >> user_input;
         
@@ -132,5 +132,9 @@ int main() {
         }
     }
     
-    cout << "You ended the game with " << credits << ". Goodbye." << "\n";
+    if (credits <= 0){
+        cout << "You lost the game with " << credits << " credits." << "\n";
+    } else if (credits > 300) {
+        cout << "You won the game with " << credits << " credits." << "\n";
+    }
 }
