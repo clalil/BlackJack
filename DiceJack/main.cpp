@@ -50,6 +50,15 @@ void dice_roll(vector<int> dices) {
     cout << dices.at(3) << endl;
 }
 
+void invalid_input(int& input) {
+    while(cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        
+        cout << "That's not an option. Try again." << "\n";
+    }
+}
+
 void who_won(int player_total, int& bet) {
     vector<int> dices = {};
     int comp_total = 0;
@@ -66,6 +75,7 @@ void who_won(int player_total, int& bet) {
         
         credits += bet;
         return;
+
     } else if (comp_total > player_total) {
         cout << "Computer rolled:" << "\n";
         dice_roll(dices);
@@ -86,11 +96,14 @@ void play_round() {
     vector<int> dices = {};
     
     cout << "Please place your bet (maximum 50)?" << "\n";
-    cin  >> bet;
+    cin >> bet;
 
-    if (bet > 50 || credits > bet) {
-        cout << "Your bet is too high. Place a lower bet." << "\n";
-        return;
+    while (cin.fail() && (bet > 50 || credits > bet)) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        
+        cout << "That's not a valid bet. Try again." << "\n";
+        cin >> bet;
     }
 
     while (playing) {
@@ -107,6 +120,7 @@ void play_round() {
         
         current_total(dices, player_total);
         cin >> user_input;
+        invalid_input(user_input);
 
         dices.clear();
         if (user_input == 1) {
@@ -129,6 +143,8 @@ int main() {
             play_round();
         } else if (user_input == 2) {
             gameover = true;
+        } else {
+            invalid_input(user_input);
         }
     }
     
