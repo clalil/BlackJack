@@ -44,13 +44,6 @@ int random_dice(void) {
     return dice_roller(random_generator);
 }
 
-void dice_roll(vector<int> dices) {
-    cout << dices.at(0) << endl;
-    cout << dices.at(1) << endl;
-    cout << dices.at(2) << endl;
-    cout << dices.at(3) << endl;
-}
-
 void invalid_input(int& input) {
     while(cin.fail()) {
         cin.clear();
@@ -61,39 +54,58 @@ void invalid_input(int& input) {
     }
 }
 
-void who_won(int player_total, int& bet) {
-    vector<int> dices = {};
-    int comp_total = 0;
+void comp_rolled(vector<int> dices) {
+    cout << "Computer rolled: " << dices.front() << " and " << dices.back() << "\n";
+}
 
-    for(int i = 0; i < 4; ++i) {
-        dices.push_back(random_dice());
-        comp_total += dices.back();
+int comp_turn(int comp_total, int player_total) {
+    vector<int> dices = {};
+    bool playing = true;
+    
+    while(playing) {
+        for(int i = 0; i < 2; ++i) {
+            dices.push_back(random_dice());
+            comp_total += dices.back();
+        }
+        
+        if (comp_total > 21) {
+            comp_rolled(dices);
+            playing = false;
+        } else if (comp_total > player_total && comp_total < 22) {
+            comp_rolled(dices);
+            playing = false;
+        } else if (comp_total < player_total) {
+            comp_rolled(dices);
+            playing = true;
+        }
     }
     
+    dices.clear();
+    return comp_total;
+}
+
+void who_won(int comp_total, int player_total, int& bet) {
     if (comp_total > 21) {
-        cout << "Computer rolled:" << "\n";
-        dice_roll(dices);
+        cout << "Computer rolled a total of " << comp_total << "." << "\n";
         cout << "You won!" << "\n";
         
         credits += bet;
         return;
-
-    } else if (comp_total > player_total) {
-        cout << "Computer rolled:" << "\n";
-        dice_roll(dices);
-        cout << "Computer's total of " << comp_total << " is more than your total." << "\n";
-        cout << "You lost!" << "\n";
-        
-        credits -= bet;
+    } else if (comp_total > player_total && comp_total < 22) {
+        cout << "Computer rolled a total of " << comp_total << "." << "\n";
+        cout << "Computer chose to stick." << "\n";
+        return;
+    } else if (comp_total < player_total) {
+        cout << "Computer rolled a total of " << comp_total << "." << "\n";
+        cout << "Computer will wait for next turn." << "\n";
         return;
     }
-    
-    dices.clear();
 }
 
 void play_round() {
     int bet = 0;
     int player_total = 0;
+    int comp_total = 0;
     bool playing = true;
     vector<int> dices = {};
     
@@ -109,13 +121,15 @@ void play_round() {
     }
 
     while (playing) {
+        comp_turn(comp_total, player_total);
+
         for(int i = 0; i < 2; ++i) {
             dices.push_back(random_dice());
             player_total += dices.back();
         }
 
         if (player_total > 21) {
-            cout << "You went bust!" << "\n";
+            cout << "You rolled " << player_total << " and went bust!" << "\n";
             credits -= bet;
             return;
         }
@@ -125,10 +139,11 @@ void play_round() {
         invalid_input(user_input);
 
         dices.clear();
-        if (user_input == 1) {
-            who_won(player_total, bet);
-            return;
-        }
+        who_won(comp_total, player_total, bet);
+        //if (user_input == 1) {
+          //  who_won(player_total, bet);
+           // return;
+        //}
     }
 }
 
