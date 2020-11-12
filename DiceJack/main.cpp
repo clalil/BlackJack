@@ -5,6 +5,7 @@
 //  Created by Clarissa Liljander on 2020-11-07.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
+
 #include <chrono>
 #include <random>
 #include <vector>
@@ -98,7 +99,7 @@ void play_round() {
     cout << "Please place your bet (maximum 50)?" << "\n";
     cin >> bet;
 
-    while (cin.fail() && (bet > 50 || credits > bet)) {
+    while (cin.fail() || (bet > 50 || bet > credits)) {
         cin.clear();
         cin.ignore(10000, '\n');
         
@@ -130,13 +131,27 @@ void play_round() {
     }
 }
 
+bool is_gameover(bool& gameover) {
+    if (credits == 0) {
+        cout << "You lost the game with " << credits << " credits." << "\n";
+        gameover = true;
+    } else if (credits > 300) {
+        cout << "You won the game with " << credits << " credits." << "\n";
+        gameover = true;
+    }
+    
+    return gameover;
+}
+
 int main() {
     bool gameover = false;
     
     greeting();
     
-    while((gameover != true && credits >= 0) || (gameover != true && credits <= 300)) {
+    while(gameover != true) {
+
         current_credits(credits);
+
         cin >> user_input;
         
         if (user_input == 1) {
@@ -146,11 +161,7 @@ int main() {
         } else {
             invalid_input(user_input);
         }
-    }
-    
-    if (credits <= 0){
-        cout << "You lost the game with " << credits << " credits." << "\n";
-    } else if (credits > 300) {
-        cout << "You won the game with " << credits << " credits." << "\n";
+        
+        is_gameover(gameover);
     }
 }
