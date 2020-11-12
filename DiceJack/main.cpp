@@ -53,10 +53,11 @@ void dice_roll(vector<int> dices) {
 
 void invalid_input(int& input) {
     while(cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
+        cin.clear();
+        cin.ignore(10000, '\n');
         
         cout << "That's not an option. Try again." << "\n";
+        cin >> input;
     }
 }
 
