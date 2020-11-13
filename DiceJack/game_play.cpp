@@ -35,19 +35,24 @@ int RandomDice(void) {
 
 bool CurrentTotal(vector<int> dices, int player_total) {
     cout << "You rolled: " << dices.front() << " and " << dices.back() << "." << "\n";
-    cout << "Your total is currently " << player_total << "." << "\n";
-    cout << "You will go bust if you score over 21." << "\n";
-    cout << "What would you like to do next?" << "\n";
-    cout << "[1] Stick" << "\n";
-    cout << "[2] Roll again" << "\n";
     
-    cin >> user_input;
-    InvalidInput(user_input);
-    
-    if(user_input == 1) {
-        return false;
-    } else if (user_input == 2) {
-        return true;
+    if(player_total < 21) {
+        cout << "Your total is currently " << player_total << "." << "\n";
+        cout << "You will go bust if you score over 21." << "\n";
+        cout << "What would you like to do next?" << "\n";
+        cout << "[1] Stick" << "\n";
+        cout << "[2] Roll again" << "\n";
+        
+        cin >> user_input;
+        InvalidInput(user_input);
+        
+        if(user_input == 1) {
+            return false;
+        } else if (user_input == 2) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }
@@ -84,7 +89,7 @@ int CompTurn(int player_total) {
     return comp_total;
 }
 
-int WhoWon(int player_total, int& bet) {
+int WhoWon(int player_total, int& credits, int bet) {
     int comp_total =+ CompTurn(player_total);
     
     if (comp_total > 21) {
@@ -97,6 +102,8 @@ int WhoWon(int player_total, int& bet) {
     } else if (comp_total > player_total && comp_total < 22) {
         cout << "Computer rolled a total of " << comp_total << "." << "\n";
         cout << "Computer won!" << "\n";
+        
+        credits -= bet;
 
     } else if (comp_total < player_total) {
         cout << "Computer rolled a total of " << comp_total << "." << "\n";
@@ -107,7 +114,7 @@ int WhoWon(int player_total, int& bet) {
     return 0;
 }
 
-int PlayRound(void) {
+int PlayRound(int& credits) {
     int bet = 0;
     int player_total = 0;
     bool playing = true;
@@ -135,14 +142,14 @@ int PlayRound(void) {
         }
         
         playing = CurrentTotal(dices, player_total);
-
+        
         if (player_total > 21) {
             cout << "You rolled " << player_total << " and went bust!" << "\n";
             credits -= bet;
         }
         
-        if (playing == false) {
-            WhoWon(player_total, bet);
+        if (playing == false && player_total < 21) {
+            WhoWon(player_total, credits, bet);
         }
 
         dices.clear();

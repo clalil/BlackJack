@@ -27,7 +27,7 @@ int main() {
         cin >> user_input;
         
         if (user_input == 1) {
-            PlayRound();
+            PlayRound(credits);
         } else if (user_input == 2) {
             gameover = true;
         } else {
