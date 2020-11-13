@@ -27,13 +27,33 @@ void current_credits(int credits) {
     cout << "[2] Leave the table." << "\n";
 }
 
-void current_total(vector<int> dices, int player_total) {
+void invalid_input(int& input) {
+    while(cin.fail()) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        
+        cout << "That's not an option. Try again." << "\n";
+    }
+}
+
+bool current_total(vector<int> dices, int player_total) {
     cout << "You rolled: " << dices.front() << " and " << dices.back() << "." << "\n";
     cout << "Your total is currently " << player_total << "." << "\n";
     cout << "You will go bust if you score over 21." << "\n";
     cout << "What would you like to do next?" << "\n";
     cout << "[1] Stick" << "\n";
     cout << "[2] Roll again" << "\n";
+    
+    cin >> user_input;
+    invalid_input(user_input);
+    
+    if(user_input == 1) {
+        return false;
+    } else if (user_input == 2) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 int random_dice(void) {
@@ -44,24 +64,15 @@ int random_dice(void) {
     return dice_roller(random_generator);
 }
 
-void invalid_input(int& input) {
-    while(cin.fail()) {
-        cin.clear();
-        cin.ignore(10000, '\n');
-        
-        cout << "That's not an option. Try again." << "\n";
-        cin >> input;
-    }
-}
-
 void comp_rolled(vector<int> dices) {
     cout << "Computer rolled: " << dices.front() << " and " << dices.back() << "\n";
 }
 
-int comp_turn(int comp_total, int player_total) {
-    vector<int> dices = {};
+int comp_turn(int player_total) {
     bool playing = true;
-    
+    int comp_total = 0;
+    vector<int> dices = {};
+        
     while(playing) {
         for(int i = 0; i < 2; ++i) {
             dices.push_back(random_dice());
@@ -78,26 +89,31 @@ int comp_turn(int comp_total, int player_total) {
             comp_rolled(dices);
             playing = true;
         }
-    }
     
-    dices.clear();
+        dices.clear();
+    }
+        
     return comp_total;
 }
 
-void who_won(int comp_total, int player_total, int& bet) {
+void who_won(int player_total, int& bet) {
+    int comp_total =+ comp_turn(player_total);
+    
     if (comp_total > 21) {
         cout << "Computer rolled a total of " << comp_total << "." << "\n";
+        cout << "Computer went bust!" << "\n";
         cout << "You won!" << "\n";
         
         credits += bet;
         return;
     } else if (comp_total > player_total && comp_total < 22) {
         cout << "Computer rolled a total of " << comp_total << "." << "\n";
-        cout << "Computer chose to stick." << "\n";
+        cout << "Computer won!" << "\n";
         return;
     } else if (comp_total < player_total) {
         cout << "Computer rolled a total of " << comp_total << "." << "\n";
-        cout << "Computer will wait for next turn." << "\n";
+        cout << "You won!" << "\n";
+        cout << "-------------------------" << "\n";
         return;
     }
 }
@@ -105,7 +121,6 @@ void who_won(int comp_total, int player_total, int& bet) {
 void play_round() {
     int bet = 0;
     int player_total = 0;
-    int comp_total = 0;
     bool playing = true;
     vector<int> dices = {};
     
@@ -119,14 +134,18 @@ void play_round() {
         cout << "That's not a valid bet. Try again." << "\n";
         cin >> bet;
     }
+    
+    cout << "Let's play!" << "\n";
+    cout << "-------------------------" << "\n";
 
     while (playing) {
-        comp_turn(comp_total, player_total);
 
         for(int i = 0; i < 2; ++i) {
             dices.push_back(random_dice());
             player_total += dices.back();
         }
+        
+        playing = current_total(dices, player_total);
 
         if (player_total > 21) {
             cout << "You rolled " << player_total << " and went bust!" << "\n";
@@ -134,16 +153,11 @@ void play_round() {
             return;
         }
         
-        current_total(dices, player_total);
-        cin >> user_input;
-        invalid_input(user_input);
+        if (playing == false) {
+            who_won(player_total, bet);
+        }
 
         dices.clear();
-        who_won(comp_total, player_total, bet);
-        //if (user_input == 1) {
-          //  who_won(player_total, bet);
-           // return;
-        //}
     }
 }
 
