@@ -25,13 +25,51 @@ void CompRolled(vector<int> dices) {
     cout << "Computer rolled: " << dices.front() << " and " << dices.back() << "\n";
 }
 
-int RandomDice(void) {
+vector<int> GenerateCardDeck() {
+    vector<int> card_deck;
+    vector<int> cards(14);
+    vector<int>::iterator iterator;
+    iota (begin(cards), end(cards), 1);
+
+    for(iterator = cards.begin(); iterator != cards.end(); iterator++) {
+        card_deck.push_back(*iterator);
+        card_deck.push_back(*iterator);
+        card_deck.push_back(*iterator);
+        card_deck.push_back(*iterator);
+    }
+    
+    return card_deck;
+}
+
+int RandomCard(const vector<int>& deck) {
     unsigned int seed = chrono::system_clock::now().time_since_epoch().count();
     mt19937 random_generator = mt19937(seed);
-    uniform_int_distribution<int> dice_roller(1, 6);
-    
-    return dice_roller(random_generator);
+    uniform_int_distribution<int> random_card(1, deck.size() - 1);
+
+    return random_card(random_generator);
 }
+
+//WIP
+play_cards_WIP() {
+    vector<int> deck = generate_card_deck();
+    vector<int> cards = {};
+
+    cout << "Old deck: " << deck.size() << "\n";
+
+    for(int i = 0; i < 2; ++i) {
+        int card_drawn = RandomCard(deck);
+        int card_value = deck[card_drawn];
+
+        cards.push_back(card_value);
+        cout << "You got: " << cards.back() << "." << "\n";
+        
+        deck.erase(deck.begin() + card_drawn);
+        cout << "New deck: " << deck.size() << "\n";
+    }
+
+    cards.clear();
+}
+//WIP
 
 bool CurrentTotal(vector<int> dices, int player_total) {
     cout << "You rolled: " << dices.front() << " and " << dices.back() << "." << "\n";
@@ -118,7 +156,8 @@ int PlayRound(int& credits) {
     int bet = 0;
     int player_total = 0;
     bool playing = true;
-    vector<int> dices = {};
+    vector<int> cards = {};
+    vector<int> deck = generate_card_deck();
     
     cout << "Please place your bet (maximum 50)?" << "\n";
     cin >> bet;
@@ -137,8 +176,8 @@ int PlayRound(int& credits) {
     while (playing) {
 
         for(int i = 0; i < 2; ++i) {
-            dices.push_back(RandomDice());
-            player_total += dices.back();
+            cards.push_back(RandomCard(deck));
+            player_total += cards.back();
         }
         
         playing = CurrentTotal(dices, player_total);

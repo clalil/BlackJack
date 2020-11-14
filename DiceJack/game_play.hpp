@@ -10,7 +10,8 @@
 
 void InvalidInput(int user_input);
 void CompRolled(std::vector<int> dices);
-int RandomDice(void);
+std::vector<int> GenerateCardDeck();
+int RandomCard(const std::vector<int> deck);
 bool CurrentTotal(std::vector<int> dices, int player_total);
 int CompTurn(int player_total);
 int WhoWon(int player_total, int credits, int bet);
