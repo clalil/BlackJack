@@ -80,9 +80,9 @@ void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_val
 
 void CompCards(const vector<int> card_values, const vector<string> card_types, const bool first_round) {
     if (first_round) {
-       cout << "Computer drew a " << card_types.front() << " card worth " << card_values.front() << " and a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
+       cout << "The dealer drew a " << card_types.front() << " card worth " << card_values.front() << " and a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
     } else {
-       cout << "Computer drew a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
+       cout << "The dealer drew a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
     }
 }
 
@@ -157,8 +157,8 @@ int WhoWon(vector<int>& deck, const int player_total, int& credits, const int be
     
     if (comp_total > 21) {
         cout << "\n";
-        cout << "Computer drew a total of " << comp_total << "." << "\n";
-        cout << "Computer went bust!" << "\n";
+        cout << "The dealer drew a total of " << comp_total << "." << "\n";
+        cout << "The dealer went bust!" << "\n";
         cout << "You won!" << "\n";
         cout << "-------------------------" << "\n";
         
@@ -166,15 +166,15 @@ int WhoWon(vector<int>& deck, const int player_total, int& credits, const int be
 
     } else if (comp_total > player_total && comp_total < 22) {
         cout << "\n";
-        cout << "Computer drew a total of " << comp_total << "." << "\n";
-        cout << "Computer won!" << "\n";
+        cout << "The dealer drew a total of " << comp_total << "." << "\n";
+        cout << "The dealer won!" << "\n";
         cout << "-------------------------" << "\n";
         
         credits -= bet;
 
     } else if (comp_total == player_total && (player_total == 17 || player_total == 18 || player_total == 19 || player_total == 20 || player_total == 21)) {
         cout << "\n";
-        cout << "Computer drew a total of " << comp_total << "." << "\n";
+        cout << "The dealer drew a total of " << comp_total << "." << "\n";
         cout << "It's a tie! Computer won!" << "\n";
         cout << "-------------------------" << "\n";
         
@@ -182,7 +182,7 @@ int WhoWon(vector<int>& deck, const int player_total, int& credits, const int be
         
     } else if (comp_total < player_total) {
         cout << "\n";
-        cout << "Computer drew a total of " << comp_total << "." << "\n";
+        cout << "The dealer drew a total of " << comp_total << "." << "\n";
         cout << "You won!" << "\n";
         cout << "-------------------------" << "\n";
         
