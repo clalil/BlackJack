@@ -123,6 +123,10 @@ int CompTurn(vector<int>& deck, int player_total) {
             CompCards(card_values, card_types);
             playing = false;
 
+        } else if (comp_total == player_total && (player_total == 17 || player_total == 18 || player_total == 19 || player_total == 20 || player_total == 21)) {
+            CompCards(card_values, card_types);
+            playing = false;
+
         } else if (comp_total < player_total) {
             CompCards(card_values, card_types);
             playing = true;
@@ -155,11 +159,21 @@ int WhoWon(vector<int>& deck, int player_total, int& credits, int bet) {
         
         credits -= bet;
 
+    } else if (comp_total == player_total && (player_total == 17 || player_total == 18 || player_total == 19 || player_total == 20 || player_total == 21)) {
+        cout << "\n";
+        cout << "Computer drew a total of " << comp_total << "." << "\n";
+        cout << "It's a tie! Computer won!" << "\n";
+        cout << "-------------------------" << "\n";
+        
+        credits -= bet;
+        
     } else if (comp_total < player_total) {
         cout << "\n";
         cout << "Computer drew a total of " << comp_total << "." << "\n";
         cout << "You won!" << "\n";
         cout << "-------------------------" << "\n";
+        
+        credits += bet;
     }
     
     return 0;
