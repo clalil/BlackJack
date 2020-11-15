@@ -46,7 +46,7 @@ int RandomCard(const vector<int>& deck) {
     return random_card(random_generator);
 }
 
-void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_values, vector<string>& card_types, bool first_round) {
+void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_values, vector<string>& card_types, bool first_round, bool is_player) {
     
     int iterator = first_round ? 2 : 1;
 
@@ -57,6 +57,22 @@ void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_val
         switch(card_value) {
             case 1 :
                 card_types.push_back("Ace");
+                
+                if(is_player) {
+                    int input;
+                    cout << "You're about to get an Ace card. Do you wish to use this as a 1 [1] or an 11 [2]?" << "\n";
+                    cin >> input;
+
+                    if (input == 1) {
+                        break;
+                    } else if (input == 2) {
+                        card_value = 11;
+                    } else {
+                        card_value = 1;
+                    }
+                }
+
+                break;
             case 11 :
                 card_types.push_back("Knight");
                 break;
@@ -117,6 +133,7 @@ bool CurrentTotal(const vector<int> card_values, const vector<string> card_types
 }
 
 int CompTurn(vector<int>& deck, const int player_total) {
+    bool is_player = false;
     bool first_round = true;
     bool playing = true;
     int comp_total = 0;
@@ -125,7 +142,7 @@ int CompTurn(vector<int>& deck, const int player_total) {
         
     while(playing) {
 
-        RandomizeCards(comp_total, deck, card_values, card_types, first_round);
+        RandomizeCards(comp_total, deck, card_values, card_types, first_round, is_player);
         
         if (comp_total > 21) {
             CompCards(card_values, card_types, first_round);
@@ -197,6 +214,7 @@ int PlayRound(int& credits) {
     int player_total = 0;
     bool playing = true;
     bool first_round = true;
+    bool is_player = true;
 
     cout << "Please place your bet (maximum 50)?" << "\n";
     cin >> bet;
@@ -217,7 +235,7 @@ int PlayRound(int& credits) {
         vector<string> card_types = {};
         vector<int> deck = GenerateCardDeck();
         
-        RandomizeCards(player_total, deck, card_values, card_types, first_round);
+        RandomizeCards(player_total, deck, card_values, card_types, first_round, is_player);
 
         playing = CurrentTotal(card_values, card_types, player_total, first_round);
 

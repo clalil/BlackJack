@@ -13,7 +13,7 @@ void InvalidInput(int user_input);
 void CompCards(std::vector<int> card_values, std::vector<std::string> card_types, bool first_round);
 std::vector<int> GenerateCardDeck();
 int RandomCard(std::vector<int> deck);
-void RandomizeCards(int current_total, std::vector<int> deck, std::vector<int> card_values, std::vector<std::string> card_types, bool first_round);
+void RandomizeCards(int current_total, std::vector<int> deck, std::vector<int> card_values, std::vector<std::string> card_types, bool first_round, bool is_player);
 bool CurrentTotal(std::vector<int> card_values, std::vector<std::string> card_types, int player_total, bool first_round);
 int CompTurn(std::vector<int> deck, int player_total);
 int WhoWon(std::vector<int> deck, int player_total, int credits, int bet);
