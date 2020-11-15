@@ -34,6 +34,6 @@ int main() {
             InvalidInput(user_input);
         }
         
-        IsGameOver(gameover);
+        IsGameOver(gameover, credits);
     }
 }

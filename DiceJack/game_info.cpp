@@ -10,8 +10,9 @@
 using namespace std;
 
 void Greeting() {
-    cout << "Welcome to Dicejack! The rules are simple:" << "\n";
+    cout << "Welcome to Black Jack! The rules are simple:" << "\n";
     cout << "You start with 100 credits. You win the game if you get to 300 credits." << "\n";
+    cout << "\n";
 }
 
 void CurrentCredits(int credits) {
