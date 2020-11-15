@@ -22,9 +22,9 @@ In this application, I've create a random number generator with a seed value, us
 
 ## Dependencies  
 * Xcode  
- 
+
 ## Setup  
-To test this application you need to fork it to your own GitHub account and clone it to your local workspace. Once you have cloned the repository, you will be able to run the build inside of Xcode.  
+To test this application you need to fork it to your own GitHub account and clone it to your local workspace. Once you have cloned the repository, you will be able to run the build inside of Xcode or through the CLI once you are inside of the root folder DiceJack.  
   
 If you do not have Xcode, you may want to run the application directly in your CLI by entering the following command:  
 ```
