@@ -70,6 +70,12 @@ void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_val
                     } else {
                         card_value = 1;
                     }
+                } else {
+                    if (current_total <= 10) {
+                        card_value = 11;
+                    } else {
+                        card_value = 1;
+                    }
                 }
 
                 break;
