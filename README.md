@@ -8,7 +8,10 @@
 [Clarissa Liljander](https://github.com/clalil)  
 
 ## The code  
-This program represents a simplified Black Jack game where the rules are currently based on the Atlantic City version.  
+This program represents a simplified Black Jack game where the rules are as follows:  
+* The dealer is dealt two cards in the beginning.
+* The dealer wins if she has > 17 and the same current total as the player, if the player goes bust (> 21) or if the dealer has a higher total than the player but less than 22. 
+* The player wins if he/she doesn't go bust (> 21 total score), the dealer goes bust or if the player has a higher score than the dealer but less than 22. 
 
 ## Dependencies  
 * Xcode  
