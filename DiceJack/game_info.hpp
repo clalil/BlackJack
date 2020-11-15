@@ -12,3 +12,4 @@ extern std::vector<int> dices;
 
 void Greeting();
 void CurrentCredits(int credits);
+bool IsGameOver(bool& gameover, int credits);
