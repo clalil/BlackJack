@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  DiceJack
+//  BlackJack
 //
 //  Created by Clarissa Liljander on 2020-11-07.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.

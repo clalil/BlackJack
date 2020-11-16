@@ -1,6 +1,6 @@
 //
 //  game_play.cpp
-//  DiceJack
+//  BlackJack
 //
 //  Created by Clarissa Liljander on 2020-11-13.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
@@ -141,6 +141,8 @@ bool CurrentTotal(const vector<int> card_values, const vector<string> card_types
     } else {
         return false;
     }
+    
+    return false;
 }
 
 int CompTurn(vector<int>& deck, const int player_total) {
