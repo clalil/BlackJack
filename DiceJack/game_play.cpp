@@ -72,7 +72,6 @@ int GotAce(const int total, const bool is_player) {
 }
 
 void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_values, vector<string>& card_types, bool first_round, bool is_player) {
-    
     int iterator = first_round ? 2 : 1;
 
     for(int i = 0; i < iterator; ++i) {
@@ -96,6 +95,7 @@ void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_val
             default :
                 string val = to_string(card_value);
                 card_types.push_back(val);
+                break;
         }
 
         card_values.push_back(card_value);
@@ -254,7 +254,6 @@ int PlayRound(int& credits) {
 
         card_values.clear();
         card_types.clear();
-
         first_round = false;
 
         if (player_total > 21) {
