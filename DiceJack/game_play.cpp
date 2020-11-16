@@ -46,6 +46,31 @@ int RandomCard(const vector<int>& deck) {
     return random_card(random_generator);
 }
 
+int GotAce(const int total, const bool is_player) {
+    int value = 1;
+
+    if(is_player) {
+        int input = 0;
+        cout << "You're about to get an Ace card. Do you wish to use this as a 1 [1] or an 11 [2]?" << "\n";
+        cin >> input;
+
+        if (input == 1) {
+        } else if (input == 2) {
+            value = 11;
+        } else {
+            value = 1;
+        }
+    } else {
+        if (total <= 10) {
+            value = 11;
+        } else {
+            value = 1;
+        }
+    }
+    
+    return value;
+}
+
 void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_values, vector<string>& card_types, bool first_round, bool is_player) {
     
     int iterator = first_round ? 2 : 1;
@@ -57,27 +82,7 @@ void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_val
         switch(card_value) {
             case 1 :
                 card_types.push_back("Ace");
-                
-                if(is_player) {
-                    int input;
-                    cout << "You're about to get an Ace card. Do you wish to use this as a 1 [1] or an 11 [2]?" << "\n";
-                    cin >> input;
-
-                    if (input == 1) {
-                        break;
-                    } else if (input == 2) {
-                        card_value = 11;
-                    } else {
-                        card_value = 1;
-                    }
-                } else {
-                    if (current_total <= 10) {
-                        card_value = 11;
-                    } else {
-                        card_value = 1;
-                    }
-                }
-
+                card_value = GotAce(current_total, is_player);
                 break;
             case 11 :
                 card_types.push_back("Knight");
