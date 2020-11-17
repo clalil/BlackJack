@@ -39,9 +39,9 @@ vector<int> GenerateCardDeck() {
 }
 
 int RandomCard(const vector<int>& deck) {
-    unsigned int seed = chrono::system_clock::now().time_since_epoch().count();
+unsigned int seed = (unsigned int)chrono::system_clock::now().time_since_epoch().count();
     mt19937 random_generator = mt19937(seed);
-    uniform_int_distribution<int> random_card(1, deck.size() - 1);
+    uniform_int_distribution<int> random_card(1, (int)deck.size() - 1);
 
     return random_card(random_generator);
 }
