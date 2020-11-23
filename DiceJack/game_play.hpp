@@ -10,12 +10,10 @@
 #include <vector>
 
 void InvalidInput(int user_input);
-void CompCards(std::vector<int> card_values, std::vector<std::string> card_types, bool first_round);
-std::vector<int> GenerateCardDeck();
-int RandomCard(std::vector<int> deck);
+void CompCards(std::vector<std::string> cards_drawn, bool first_round);
 int GotAce(int total, bool is_player);
-void RandomizeCards(int current_total, std::vector<int> deck, std::vector<int> card_values, std::vector<std::string> card_types, bool first_round, bool is_player);
-bool CurrentTotal(std::vector<int> card_values, std::vector<std::string> card_types, int player_total, bool first_round);
-int CompTurn(std::vector<int> deck, int player_total);
-int WhoWon(std::vector<int> deck, int player_total, int credits, int bet);
+void RandomizeCards(int current_total, std::vector<std::string> cards_drawn, bool first_round, bool is_player);
+bool CurrentTotal(std::vector<std::string> cards_drawn, int player_total, bool first_round);
+int CompTurn(int player_total);
+int WhoWon(int player_total, int credits, int bet);
 int PlayRound(int& credits);

@@ -5,6 +5,7 @@
 //  Created by Clarissa Liljander on 2020-11-13.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
+#include "card_deck.hpp"
 #include "globals.hpp"
 #include <chrono>
 #include <random>
@@ -12,6 +13,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
+CardDeck deck;
 
 void InvalidInput(int input) {
     while(cin.fail()) {
@@ -20,30 +22,6 @@ void InvalidInput(int input) {
         
         cout << "That's not an option. Try again." << "\n";
     }
-}
-
-vector<int> GenerateCardDeck() {
-    vector<int> card_deck;
-    vector<int> cards(13);
-    vector<int>::iterator iterator;
-    iota (begin(cards), end(cards), 1);
-
-    for(iterator = cards.begin(); iterator != cards.end(); iterator++) {
-        card_deck.push_back(*iterator);
-        card_deck.push_back(*iterator);
-        card_deck.push_back(*iterator);
-        card_deck.push_back(*iterator);
-    }
-    
-    return card_deck;
-}
-
-int RandomCard(const vector<int>& deck) {
-unsigned int seed = (unsigned int)chrono::system_clock::now().time_since_epoch().count();
-    mt19937 random_generator = mt19937(seed);
-    uniform_int_distribution<int> random_card(1, (int)deck.size() - 1);
-
-    return random_card(random_generator);
 }
 
 int GotAce(const int total, const bool is_player) {
@@ -71,53 +49,36 @@ int GotAce(const int total, const bool is_player) {
     return value;
 }
 
-void RandomizeCards(int& current_total, vector<int>& deck, vector<int>& card_values, vector<string>& card_types, bool first_round, bool is_player) {
+void RandomizeCards(int& current_total, vector<string>& cards_drawn, bool first_round, bool is_player) {
     int iterator = first_round ? 2 : 1;
 
     for(int i = 0; i < iterator; ++i) {
-        int card_drawn = RandomCard(deck);
-        int card_value = deck[card_drawn];
-
-        switch(card_value) {
-            case 1 :
-                card_types.push_back("Ace");
-                card_value = GotAce(current_total, is_player);
-                break;
-            case 11 :
-                card_types.push_back("Knight");
-                break;
-            case 12 :
-                card_types.push_back("Queen");
-                break;
-            case 13 :
-                card_types.push_back("King");
-                break;
-            default :
-                string val = to_string(card_value);
-                card_types.push_back(val);
-                break;
+        Card card = deck.Draw();
+        int card_value = card.value;
+        string card_description = card.text;
+        
+        if(card_value == 1) {
+            card_value = GotAce(current_total, is_player);
         }
 
-        card_values.push_back(card_value);
-        current_total += card_values.back();
-
-        deck.erase(deck.begin() + card_drawn);
+        cards_drawn.push_back(card_description);
+        current_total += card_value;
     }
 }
 
-void CompCards(const vector<int> card_values, const vector<string> card_types, const bool first_round) {
+void CompCards(const vector<string> cards, const bool first_round) {
     if (first_round) {
-       cout << "The dealer drew a " << card_types.front() << " card worth " << card_values.front() << " and a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
+       cout << "The dealer got a " << cards.front() << " and a " << cards.back() << "." << "\n";
     } else {
-       cout << "The dealer drew a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
+       cout << "The dealer got a " << cards.back() << "." << "\n";
     }
 }
 
-bool CurrentTotal(const vector<int> card_values, const vector<string> card_types, const int player_total, const bool first_round) {
+bool CurrentTotal(const vector<string> cards, const int player_total, const bool first_round) {
     if (first_round) {
-       cout << "You drew a " << card_types.front() << " card worth " << card_values.front() << " and a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
+       cout << "You were dealt a " << cards.front() << " and a " << cards.back() << "." << "\n";
     } else {
-       cout << "You drew a " << card_types.back() << " card worth " << card_values.back() << "." << "\n";
+       cout << "You were dealt a " << cards.back() << "." << "\n";
     }
     
     if(player_total < 21) {
@@ -145,45 +106,43 @@ bool CurrentTotal(const vector<int> card_values, const vector<string> card_types
     return false;
 }
 
-int CompTurn(vector<int>& deck, const int player_total) {
+int CompTurn(const int player_total) {
     bool is_player = false;
     bool first_round = true;
     bool playing = true;
     int comp_total = 0;
-    vector<int> card_values = {};
-    vector<string> card_types = {};
+    vector<std::string> cards_drawn = {};
         
     while(playing) {
 
-        RandomizeCards(comp_total, deck, card_values, card_types, first_round, is_player);
+        RandomizeCards(comp_total, cards_drawn, first_round, is_player);
         
         if (comp_total > 21) {
-            CompCards(card_values, card_types, first_round);
+            CompCards(cards_drawn, first_round);
             playing = false;
 
         } else if (comp_total > player_total && comp_total < 22) {
-            CompCards(card_values, card_types, first_round);
+            CompCards(cards_drawn, first_round);
             playing = false;
 
         } else if (comp_total == player_total && (player_total == 17 || player_total == 18 || player_total == 19 || player_total == 20 || player_total == 21)) {
-            CompCards(card_values, card_types, first_round);
+            CompCards(cards_drawn, first_round);
             playing = false;
 
         } else if (comp_total < player_total) {
-            CompCards(card_values, card_types, first_round);
+            CompCards(cards_drawn, first_round);
             playing = true;
         }
     
-        card_values.clear();
-        card_types.clear();
+        cards_drawn.clear();
         first_round = false;
     }
         
     return comp_total;
 }
 
-int WhoWon(vector<int>& deck, const int player_total, int& credits, const int bet) {
-    int comp_total =+ CompTurn(deck, player_total);
+int WhoWon(const int player_total, int& credits, const int bet) {
+    int comp_total =+ CompTurn(player_total);
     
     if (comp_total > 21) {
         cout << "\n";
@@ -228,6 +187,7 @@ int PlayRound(int& credits) {
     bool playing = true;
     bool first_round = true;
     bool is_player = true;
+    deck.ResetDeck();
 
     cout << "Please place your bet (maximum 50)?" << "\n";
     cin >> bet;
@@ -244,16 +204,13 @@ int PlayRound(int& credits) {
     cout << "-------------------------" << "\n";
 
     while (playing) {
-        vector<int> card_values = {};
-        vector<string> card_types = {};
-        vector<int> deck = GenerateCardDeck();
+        vector<std::string> cards_drawn = {};
         
-        RandomizeCards(player_total, deck, card_values, card_types, first_round, is_player);
+        RandomizeCards(player_total, cards_drawn, first_round, is_player);
 
-        playing = CurrentTotal(card_values, card_types, player_total, first_round);
+        playing = CurrentTotal(cards_drawn, player_total, first_round);
 
-        card_values.clear();
-        card_types.clear();
+        cards_drawn.clear();
         first_round = false;
 
         if (player_total > 21) {
@@ -262,7 +219,7 @@ int PlayRound(int& credits) {
         }
         
         if (playing == false && player_total < 21) {
-            WhoWon(deck, player_total, credits, bet);
+            WhoWon(player_total, credits, bet);
         }
 
     }
