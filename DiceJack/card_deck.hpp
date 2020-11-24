@@ -16,6 +16,7 @@ struct Card {
 
 class CardDeck {
     std::vector<Card> cards;
+    std::string CardDescription(const char suit, const std::string letters);
 
 public:
     CardDeck();
