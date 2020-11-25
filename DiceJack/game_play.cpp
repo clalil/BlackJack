@@ -109,7 +109,7 @@ int CompTurn(const int player_total) {
         } else if (comp_total > player_total && comp_total < 22) {
             playing = false;
 
-        } else if (comp_total == player_total && (player_total == 17 || player_total == 18 || player_total == 19 || player_total == 20 || player_total == 21)) {
+        } else if (comp_total == player_total && player_total >= 17) {
             playing = false;
 
         } else if (comp_total < player_total) {
