@@ -10,7 +10,7 @@
 ## The code  
 ### Gameplay
 This program represents a simplified Black Jack game where the rules are as follows:  
-* The dealer wins if she has > 17 and the same current total as the player, if the player goes bust (> 21) or if the dealer has a higher total than the player but less than 22. 
+* The dealer wins if she has >= 17 and the same current total as the player or if the player goes bust (> 21) or if the dealer has a higher total than the player but less than 22. 
 * The player wins if he/she doesn't go bust (> 21 total score), the dealer goes bust or if the player has a higher score than the dealer but less than 22. 
 
 ### Primitive AI
