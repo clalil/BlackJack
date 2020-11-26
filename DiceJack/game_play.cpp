@@ -94,7 +94,7 @@ bool CurrentTotal(const vector<string> cards, const int player_total, const bool
 
 int CompTurn(const int player_total) {
     bool is_player = false;
-    bool first_round = true;
+    bool first_round = false;
     bool playing = true;
     int comp_total = 0;
     vector<std::string> cards_drawn = {};
@@ -117,7 +117,6 @@ int CompTurn(const int player_total) {
         }
     
         cards_drawn.clear();
-        first_round = false;
     }
         
     return comp_total;
