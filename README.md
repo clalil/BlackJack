@@ -25,8 +25,8 @@ To run this application you will need a g++ complier installed locally on your c
 ## Setup  
 To test this application you need to fork it to your own GitHub account and clone it to your local workspace. Once you have cloned the repository, you will be able to run the application through the CLI once you are inside of the root folder DiceJack by entering the following command:  
 ```
-$ g++ -std=c++11 main.cpp game_info.cpp game_play.cpp card_deck.cpp -o play.cpp
-$ ./play.cpp
+$ g++ -std=c++11 main.cpp game_info.cpp game_play.cpp card_deck.cpp -o game
+$ ./game
 ```
 
 ## Instructions  
